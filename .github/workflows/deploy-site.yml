@@ -37,7 +37,7 @@ jobs:
         working-directory: ./blog
         run: npm ci
 
-      - name: Build Astro blog
+      - name: Build Astro blog for /blog/
         working-directory: ./blog
         run: npm run build
 
@@ -47,8 +47,11 @@ jobs:
 
           rsync -av site-root/ dist-site/
 
+          rm -rf dist-site/blog
           mkdir -p dist-site/blog
           rsync -av blog/dist/ dist-site/blog/
+
+          touch dist-site/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
