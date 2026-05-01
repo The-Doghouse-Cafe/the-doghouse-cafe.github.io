@@ -2,9 +2,8 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SITE_ROOT_DIR="$ROOT_DIR/site-root"
-SOURCE_DIR="$SITE_ROOT_DIR/assets/team"
-DEST_DIR="$ROOT_DIR/blog/public/assets/people"
+SOURCE_DIR="$ROOT_DIR/public/assets/team"
+DEST_DIR="$ROOT_DIR/public/assets/people"
 
 if [[ ! -d "$SOURCE_DIR" ]]; then
   echo "Source team images directory not found: $SOURCE_DIR" >&2

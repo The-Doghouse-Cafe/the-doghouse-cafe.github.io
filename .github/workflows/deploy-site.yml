@@ -4,8 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "site-root/**"
-      - "blog/**"
+      - "src/**"
+      - "public/**"
+      - "astro.config.mjs"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/deploy-site.yml"
   workflow_dispatch:
 
@@ -31,32 +34,21 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: blog/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install blog dependencies
-        working-directory: ./blog
+      - name: Install dependencies
         run: npm ci
 
-      - name: Build Astro blog for /blog/
-        working-directory: ./blog
+      - name: Build Astro site
         run: npm run build
 
-      - name: Prepare deploy artifact
-        run: |
-          mkdir -p dist-site
-
-          rsync -av site-root/ dist-site/
-
-          rm -rf dist-site/blog
-          mkdir -p dist-site/blog
-          rsync -av blog/dist/ dist-site/blog/
-
-          touch dist-site/.nojekyll
+      - name: Disable Jekyll
+        run: touch dist/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist-site
+          path: dist
 
   deploy:
     environment:

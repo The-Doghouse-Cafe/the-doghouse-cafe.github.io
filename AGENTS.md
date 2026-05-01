@@ -2,20 +2,20 @@
 
 ## Site Structure
 
-- The root site is static HTML/CSS/JS.
-- Root pages live at `index.html` and `about/index.html`.
-- Shared static styling lives in `styles/base.css`.
-- Theme variants live in separate CSS files under `styles/`.
-- Theme switching behavior lives in `scripts/theme.js`.
-- Blog work belongs in the Astro app under `blog/`.
+- The root site is an Astro app.
+- Root pages live at `src/pages/index.astro` and `src/pages/about/index.astro`.
+- Blog pages live under `src/pages/blog/`.
+- Shared static styling is authored in `src/styles/base.css` and served from `public/styles/base.css`.
+- Theme variants are authored in separate CSS files under `src/styles/` and served from `public/styles/`.
+- Theme switching behavior lives in `public/scripts/theme.js`.
 
 ## Theme System
 
-The static site uses token-based themes:
+The site uses token-based themes:
 
-- `styles/base.css` contains shared layout, components, page styles, and theme switcher styling.
-- `styles/ember.css` is the default warm dark theme.
-- `styles/ocean.css` is the darker ocean-inspired theme.
+- `src/styles/base.css` contains shared layout, components, page styles, and theme switcher styling.
+- `src/styles/ember.css` is the default warm dark theme.
+- `src/styles/ocean.css` is the darker ocean-inspired theme.
 
 When changing colors, shadows, gradients, or role palette values, update the theme files rather than hard-coding visual values in `base.css`.
 
@@ -66,36 +66,36 @@ The switcher currently supports `ember` and `ocean`, persists the selected theme
 
 When adding a new theme:
 
-1. Create `styles/{theme}.css`.
+1. Create `src/styles/{theme}.css`.
 2. Import `./base.css`.
 3. Define the full token set.
-4. Add the theme name to `themes` in `scripts/theme.js`.
-5. Add an option to each `[data-theme-select]` control.
+4. Run `.tools/sync-styles.sh` so the theme is available from `public/styles/`.
+5. Add the theme name to `themes` in `public/scripts/theme.js`.
+6. Add an option to each `[data-theme-select]` control.
 
 ## Blog Work
 
-Use the Astro project in `blog/` for blog-related work.
+Use the root Astro project for blog-related work.
 
-- Astro config: `blog/astro.config.mjs`
-- Astro base layout: `blog/src/layouts/BaseLayout.astro`
-- Blog post layout: `blog/src/layouts/PostLayout.astro`
-- Blog post content: `blog/src/content/posts/`
-- Astro source pages: `blog/src/pages/`
-- Blog package scripts are defined in `blog/package.json`.
-- The blog config uses `base: '/blog'` and outputs to `../blog-dist`.
-- Run blog commands from the `blog/` directory, such as `npm run dev`, `npm run build`, or `npm run preview`.
+- Astro config: `astro.config.mjs`
+- Astro base layout: `src/layouts/BaseLayout.astro`
+- Blog post layout: `src/layouts/PostLayout.astro`
+- Blog post content: `src/content/posts/`
+- Astro source pages: `src/pages/`
+- Package scripts are defined in `package.json`.
+- Run commands from the repository root, such as `npm run dev`, `npm run build`, or `npm run preview`.
 
-Do not implement blog pages in the static root unless explicitly asked. Keep blog UI, routes, content, and Astro-specific assets inside `blog/`.
+Keep blog UI, routes, content, and Astro-specific assets inside `src/`.
 
-Astro blog pages should use `blog/src/layouts/BaseLayout.astro`. It loads the root site theme stylesheet, theme switcher markup, and `/scripts/theme.js` so blog pages stay visually aligned with the static site.
+Astro pages should use `src/layouts/BaseLayout.astro`. It loads the root site theme stylesheet and theme switcher markup so pages stay visually aligned.
 
-Blog posts should be Markdown files in `blog/src/content/posts/` with frontmatter matching `blog/src/content.config.ts`. The blog index lists non-draft posts, and `blog/src/pages/posts/[slug].astro` renders individual post pages with `PostLayout.astro`.
+Blog posts should be Markdown files in `src/content/posts/` with frontmatter matching `src/content.config.ts`. The blog index lists non-draft posts, and `src/pages/blog/posts/[slug].astro` renders individual post pages with `PostLayout.astro`.
 
 Post frontmatter should include an `author` object with `name`, plus optional `role`, `avatar`, and `linkedin` fields. Author LinkedIn links must be HTTPS LinkedIn URLs.
 
-Blog contributor profiles live in `blog/src/content/authors/` and power the `/blog/contributors/` page. Author profile links must be HTTPS LinkedIn URLs.
+Blog contributor profiles live in `src/content/authors/` and power the `/blog/contributors/` page. Author profile links must be HTTPS LinkedIn URLs.
 
-For blog author avatars, put images in root `assets/team/` and reference them by filename, for example `avatar: "matt.webp"`. Run `.tools/sync-people-images.sh` to copy those files to `blog/public/assets/people/`; the blog templates resolve filename avatars to `/blog/assets/people/{filename}`.
+For blog author avatars, put images in `public/assets/team/` and reference them by filename, for example `avatar: "matt.webp"`. Run `.tools/sync-people-images.sh` to copy those files to `public/assets/people/`; the blog templates resolve filename avatars to `/assets/people/{filename}`.
 
 ## Editing Guidance
 

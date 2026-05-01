@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import AboutIntro from "../../components/AboutIntro.astro";
+import TeamCard from "../../components/TeamCard.astro";
+import { aboutPage } from "../../data/about";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const teamMembers = (await getCollection("team", ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.priority - b.data.priority
+);
+---
+
+<BaseLayout title={aboutPage.title} description={aboutPage.description}>
+  <div class="about-page">
+    <a class="about-back" href={aboutPage.backLink.href}>{aboutPage.backLink.label}</a>
+
+    <AboutIntro hero={aboutPage.hero} sections={aboutPage.sections} />
+
+    <section class="about-section">
+      <h2>{aboutPage.team.title}</h2>
+
+      <div class="team-grid">
+        {teamMembers.map((member) => <TeamCard member={member} />)}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
