@@ -1,0 +1,11 @@
+---
+import AboutIntro from "../../components/AboutIntro.astro";
+import { aboutPage } from "../../data/about";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title={aboutPage.title} description={aboutPage.description}>
+  <div class="about-page">
+    <AboutIntro hero={aboutPage.hero} sections={aboutPage.sections} />
+  </div>
+</BaseLayout>

@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Doghouse Cafe"
+  description="A community for real-world engineering stories, production failures, weird edge cases, and debugging paths."
+  bodyClass="home-page"
+>
+  <img class="logo" src="/assets/img/doghouse-logo.png" alt="Doghouse Cafe logo" />
+
+  <h1>Doghouse Cafe</h1>
+
+  <p class="tagline">
+    Where systems fail - and people figure out why.
+  </p>
+
+  <p class="description">
+    Doghouse Cafe is a community for real-world engineering stories:
+    production failures, weird edge cases, debugging paths, partial answers,
+    and the messy gap between &ldquo;it should work&rdquo; and what actually happens.
+  </p>
+
+  <div class="actions">
+    <a class="button primary" href="https://community.doghouse.cafe">Join the Community</a>
+    <a class="button secondary" href="/blog/">Read the Blog</a>
+  </div>
+
+  <p class="note">
+    Real experience &gt; polished writing. If it should work... but doesn&rsquo;t, it belongs here.
+  </p>
+
+
+
+<section class="home-about">
+  <div class="about-grid">
+
+    <div class="about-card">
+      <h2>What this is</h2>
+      <p>
+        Dog House Cafe is a community for builders, operators, and debuggers who care about what actually happens in production—not just what should happen.
+      </p>
+    </div>
+
+    <div class="about-card">
+      <h2>What belongs here</h2>
+      <p>
+        Production failures, weird edge cases, partial fixes, and the paths people took to figure things out when systems didn’t behave the way they were supposed to.
+      </p>
+    </div>
+
+    <div class="about-card">
+      <h2>Why it exists</h2>
+      <p>
+        Most systems don’t fail randomly—they fail under pressure. This is a place to capture those moments and learn from them.
+      </p>
+    </div>
+
+  </div>
+</section>
+</BaseLayout>

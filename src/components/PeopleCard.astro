@@ -1,0 +1,98 @@
+---
+import type { Person } from "../lib/people";
+import { resolvePeopleImage } from "../lib/people";
+
+interface Props {
+  person: Person;
+  linkProfile?: boolean;
+}
+
+const { person, linkProfile = false } = Astro.props;
+const { name, slug, role, roleShort, image, bioShort, links, cardRole } = person;
+const primaryLinks = links.filter((link) => link.type === "primary");
+const affiliationLinks = links.filter((link) => link.type === "affiliation");
+const affiliations = person.affiliations.slice(0, 2);
+const imageSrc = resolvePeopleImage(image);
+const roleText = roleShort ?? role;
+const roleLines = roleText?.split("\n") ?? [];
+const profileHref = slug ? `/people/${slug}/` : undefined;
+const cardBody = bioShort ?? person.bio;
+const isIconAvatar = image?.endsWith(".svg") ?? false;
+---
+
+<article class:list={["people-card", cardRole]}>
+  <div class="profile-bg"></div>
+  <div class="avatar-ring">
+    {
+      imageSrc && isIconAvatar ? (
+        <span class="guest-avatar-icon" role="img" aria-label={name}></span>
+      ) : imageSrc ? (
+        <img class="people-avatar" src={imageSrc} alt={name} />
+      ) : (
+        <span class="guest-avatar-icon" role="img" aria-label={name}></span>
+      )
+    }
+  </div>
+
+  <h3>
+    {
+      linkProfile && profileHref ? (
+        <a class="people-name-link" href={profileHref}>{name}</a>
+      ) : (
+        name
+      )
+    }
+  </h3>
+  <p class="people-role">
+    {
+      roleLines.map((line, index) => (
+        <>
+          {index > 0 && <br />}
+          {line}
+        </>
+      ))
+    }
+  </p>
+
+  {cardBody && <p class="people-bio">{cardBody}</p>}
+
+  {
+    affiliations.length > 0 && (
+      <ul class="people-card-affiliations" aria-label={`${name} affiliations`}>
+        {affiliations.map((affiliation) => (
+          <li>{affiliation.label}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  {
+    affiliationLinks.length > 0 ? (
+      <div class="people-links">
+        {primaryLinks.map((link) => (
+          <a class="people-link" href={link.href} target="_blank" rel="noopener noreferrer">
+            {link.label}
+          </a>
+        ))}
+        <div class="people-affiliations">
+          {affiliationLinks.map((link) => (
+            <a
+              class="people-affiliation-link"
+              href={link.href}
+              target={link.href === "#" ? undefined : "_blank"}
+              rel={link.href === "#" ? undefined : "noopener noreferrer"}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    ) : (
+      primaryLinks.map((link) => (
+        <a class="people-link" href={link.href} target="_blank" rel="noopener noreferrer">
+          {link.label}
+        </a>
+      ))
+    )
+  }
+</article>
