@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { resolvePostAuthor } from "../lib/authors";
 import { resolvePeopleImage } from "../lib/people";
 
 interface Props {
@@ -14,7 +15,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
 });
 const slug = post.id.replace(/\.md$/, "");
 const teaser = post.data.teaser ?? post.data.description;
-const author = post.data.author;
+const author = await resolvePostAuthor(post.data.author);
 const blogBasePath = "/blog/";
 const postUrl = `${blogBasePath}posts/${slug}/`;
 const avatarSrc = resolvePeopleImage(author.avatar);

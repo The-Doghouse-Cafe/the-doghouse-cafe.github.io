@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { resolvePostAuthor } from "../lib/authors";
 import { resolvePeopleImage } from "../lib/people";
 import BaseLayout from "./BaseLayout.astro";
 
@@ -13,7 +14,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
   day: "numeric",
   year: "numeric",
 });
-const author = post.data.author;
+const author = await resolvePostAuthor(post.data.author);
 const blogBasePath = "/blog/";
 const avatarSrc = resolvePeopleImage(author.avatar);
 ---
@@ -41,7 +42,7 @@ const avatarSrc = resolvePeopleImage(author.avatar);
         </span>
       </div>
       <h1>{post.data.title}</h1>
-      <p>{post.data.description}</p>
+
       {
         post.data.tags.length > 0 && (
           <ul class="tag-list" aria-label="Post tags">
@@ -52,7 +53,7 @@ const avatarSrc = resolvePeopleImage(author.avatar);
         )
       }
     </header>
-
+     <p>{post.data.description}</p>
     <div class="post-content">
       <slot />
     </div>

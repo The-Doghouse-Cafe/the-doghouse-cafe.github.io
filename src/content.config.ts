@@ -23,7 +23,7 @@ const linkedinUrl = z
   .optional();
 
 const posts = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/posts" }),
+  loader: glob({ pattern: "**/*.md", base: "./src/blog-content/posts" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -44,7 +44,7 @@ const posts = defineCollection({
 });
 
 const authors = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/authors" }),
+  loader: glob({ pattern: "**/*.md", base: "./src/blog-content/authors" }),
   schema: z.object({
     name: z.string(),
     role: z.string().optional(),
@@ -57,4 +57,26 @@ const authors = defineCollection({
   }),
 });
 
-export const collections = { authors, posts };
+const team = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/team" }),
+  schema: z.object({
+    name: z.string(),
+    role: z.string(),
+    image: z.string(),
+    bio: z.string(),
+    links: z
+      .array(
+        z.object({
+          label: z.string(),
+          href: z.string(),
+          type: z.enum(["primary", "affiliation"]).default("primary"),
+        })
+      )
+      .default([]),
+    cardRole: z.enum(["founder", "dev", "author"]).default("author"),
+    priority: z.number().default(999),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { authors, posts, team };

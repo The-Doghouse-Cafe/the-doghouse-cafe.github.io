@@ -1,13 +1,18 @@
 ---
+import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  bodyClass?: string;
+}
 
 const {
   title = "Dog House Cafe",
   description = "Real-world infrastructure, systems, debugging, and builder stories.",
-} = Astro.props;
-const bodyClass = Astro.props.bodyClass || undefined;
-
-const blogBasePath = "/blog/";
+  bodyClass,
+} = Astro.props as Props;
 const themeBasePath = "/styles/";
 ---
 
@@ -26,37 +31,17 @@ const themeBasePath = "/styles/";
       href="/styles/ember.css"
     />
 
-    <script is:inline>
+    <!-- <script is:inline>
       const themes = new Set(["ember", "ocean"]);
       const savedTheme = localStorage.getItem("doghouse-theme");
       const initialTheme = themes.has(savedTheme) ? savedTheme : "ember";
       document.documentElement.dataset.theme = initialTheme;
-    </script>
+    </script> -->
   </head>
 
   <body class={bodyClass}>
     <div class="site-shell">
-      <header class="site-header">
-        <a class="site-logo" href="/">Dog House Cafe</a>
-
-        <nav class="site-nav" aria-label="Main navigation">
-          <a href="/">Home</a>
-          <a href="/about/">About</a>
-          <a href="/blog/">Blog</a>
-          <a href="/blog/contributors/">Contributors</a>
-          <a href="https://community.doghouse.cafe">Community</a>
-          <a href="https://www.linkedin.com/company/dog-house-cafe" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://github.com/The-Doghouse-Cafe" target="_blank" rel="noopener noreferrer">GitHub</a>
-        </nav>
-
-        <div class="theme-switcher">
-          <label class="visually-hidden" for="theme-select">Theme</label>
-          <select class="theme-select" id="theme-select" data-theme-select>
-            <option value="ember">Ember</option>
-            <option value="ocean">Ocean</option>
-          </select>
-        </div>
-      </header>
+      <Header />
       <main class="site-main">
         <slot />
       </main>
