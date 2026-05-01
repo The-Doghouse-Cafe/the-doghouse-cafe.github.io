@@ -18,7 +18,7 @@ export const aboutPage = {
       paragraphs: ["If it should work... but doesn\u2019t - it belongs here."],
     },
   ],
-  team: {
+  people: {
     title: "Who\u2019s building it?",
   },
 } as const;

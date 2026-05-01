@@ -1,4 +1,5 @@
-import { getCollection, type CollectionEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { getPeople, type Person } from "./people";
 
 type PostAuthor = CollectionEntry<"posts">["data"]["author"];
 
@@ -9,7 +10,7 @@ export type ResolvedPostAuthor = {
   linkedin?: string;
 };
 
-let authorsPromise: Promise<CollectionEntry<"authors">[]> | undefined;
+let peoplePromise: Promise<Person[]> | undefined;
 
 function normalizeAuthorName(name: string) {
   return name
@@ -18,16 +19,16 @@ function normalizeAuthorName(name: string) {
     .replace(/\s+/g, " ");
 }
 
-async function getAuthors() {
-  authorsPromise ??= getCollection("authors", ({ data }) => !data.draft);
-  return authorsPromise;
+async function getNormalizedPeople() {
+  peoplePromise ??= getPeople();
+  return peoplePromise;
 }
 
 export async function resolvePostAuthor(author: PostAuthor): Promise<ResolvedPostAuthor> {
-  const authors = await getAuthors();
+  const people = await getNormalizedPeople();
   const authorName = normalizeAuthorName(author.name);
-  const matchedAuthor = authors.find(
-    (profile) => normalizeAuthorName(profile.data.name) === authorName
+  const matchedAuthor = people.find(
+    (profile) => normalizeAuthorName(profile.name) === authorName
   );
 
   if (!matchedAuthor) {
@@ -37,10 +38,12 @@ export async function resolvePostAuthor(author: PostAuthor): Promise<ResolvedPos
     };
   }
 
+  const linkedin = matchedAuthor.links.find((link) => link.label === "LinkedIn");
+
   return {
-    name: matchedAuthor.data.name,
-    role: matchedAuthor.data.role,
-    avatar: matchedAuthor.data.avatar,
-    linkedin: matchedAuthor.data.link,
+    name: matchedAuthor.name,
+    role: matchedAuthor.roleShort ?? matchedAuthor.role,
+    avatar: matchedAuthor.image,
+    linkedin: linkedin?.href,
   };
 }
