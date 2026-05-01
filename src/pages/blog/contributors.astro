@@ -1,14 +1,10 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { resolvePeopleImage } from "../lib/people";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { resolvePeopleImage } from "../../lib/people";
 
 const authors = await getCollection("authors", ({ data, id }) => !data.draft && id !== "guest" && id !== "guest.md");
 
-
-const blogBasePath = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
 
 const groupOrder = ["Founders", "Contributors", "Guests"];
 
@@ -62,7 +58,7 @@ const groupedAuthors = groupOrder
 
         <div class="contributors-grid">
           {authors.map((author) => {
-            const avatarSrc = resolvePeopleImage(author.data.avatar, blogBasePath);
+            const avatarSrc = resolvePeopleImage(author.data.avatar);
             const affiliations = author.data.affiliations?.slice(0, 2) ?? [];
 
             return (

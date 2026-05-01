@@ -5,11 +5,10 @@ const {
   title = "Dog House Cafe",
   description = "Real-world infrastructure, systems, debugging, and builder stories.",
 } = Astro.props;
+const bodyClass = Astro.props.bodyClass || undefined;
 
-const blogBasePath = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-const themeBasePath = `${blogBasePath}styles/`;
+const blogBasePath = "/blog/";
+const themeBasePath = "/styles/";
 ---
 
 <!doctype html>
@@ -24,7 +23,7 @@ const themeBasePath = `${blogBasePath}styles/`;
       id="theme-stylesheet"
       data-theme-link
       rel="stylesheet"
-      href={`${themeBasePath}ember.css`}
+      href="/styles/ember.css"
     />
 
     <script is:inline>
@@ -35,7 +34,7 @@ const themeBasePath = `${blogBasePath}styles/`;
     </script>
   </head>
 
-  <body>
+  <body class={bodyClass}>
     <div class="site-shell">
       <header class="site-header">
         <a class="site-logo" href="/">Dog House Cafe</a>
@@ -43,9 +42,11 @@ const themeBasePath = `${blogBasePath}styles/`;
         <nav class="site-nav" aria-label="Main navigation">
           <a href="/">Home</a>
           <a href="/about/">About</a>
-          <a href={blogBasePath}>Blog</a>
-          <a href={`${blogBasePath}contributors/`}>Contributors</a>
+          <a href="/blog/">Blog</a>
+          <a href="/blog/contributors/">Contributors</a>
           <a href="https://community.doghouse.cafe">Community</a>
+          <a href="https://www.linkedin.com/company/dog-house-cafe" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://github.com/The-Doghouse-Cafe" target="_blank" rel="noopener noreferrer">GitHub</a>
         </nav>
 
         <div class="theme-switcher">

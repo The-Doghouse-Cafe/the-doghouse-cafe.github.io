@@ -1,24 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
 
-  <title>About — Doghouse Cafe</title>
-
-  <link id="theme-stylesheet" data-theme-link rel="stylesheet" href="/styles/ember.css" />
-</head>
-<body>
-  <div class="theme-switcher">
-    <label class="visually-hidden" for="theme-select">Theme</label>
-    <select class="theme-select" id="theme-select" data-theme-select>
-      <option value="ember">Ember</option>
-      <option value="ocean">Ocean</option>
-    </select>
-  </div>
-
-  <main class="about-page">
-    <a class="about-back" href="/">← Back to Doghouse Cafe</a>
+<BaseLayout
+  title="About | Doghouse Cafe"
+  description="About Doghouse Cafe and the people building it."
+>
+  <div class="about-page">
+    <a class="about-back" href="/">&larr; Back to Doghouse Cafe</a>
 
     <section class="about-hero">
       <h1>About Doghouse Cafe</h1>
@@ -26,7 +15,7 @@
       <p>
         Doghouse Cafe is a community for real-world engineering: production failures,
         weird edge cases, debugging paths, partial answers, and the gap between
-        “it should work” and what actually happens.
+        &ldquo;it should work&rdquo; and what actually happens.
       </p>
 
       <p>
@@ -39,12 +28,12 @@
     <section class="about-section">
       <h2>Guiding idea</h2>
       <p>
-        If it should work… but doesn’t — it belongs here.
+        If it should work... but doesn&rsquo;t - it belongs here.
       </p>
     </section>
 
     <section class="about-section">
-      <h2>Who’s building it?</h2>
+      <h2>Who&rsquo;s building it?</h2>
 
       <div class="team-grid">
         <article class="team-card founder">
@@ -52,10 +41,9 @@
           <div class="avatar-ring">
             <img class="team-avatar" src="/assets/team/matt.webp" alt="Matt McGowan" />
           </div>
-          
 
           <h3>Matt McGowan</h3>
-          <p class="team-role">Co-Founder,<br/>Infrastructure Lead</p>
+          <p class="team-role">Co-Founder,<br />Infrastructure Lead</p>
 
           <p class="team-bio">
             Matt is Co-Founder of Dog House Cafe, leading platform direction and technical strategy. With experience across infrastructure, reliability, and large-scale systems, he focuses on translating real-world operational lessons into practical insights for the community.
@@ -78,9 +66,9 @@
           <div class="avatar-ring">
             <img class="team-avatar" src="/assets/team/dani.webp" alt="Dani Perteet" />
           </div>
-          
+
           <h3>Dani Perteet</h3>
-          <p class="team-role">Co-Founder,<br/> Head of Community &amp; Growth</p>
+          <p class="team-role">Co-Founder,<br />Head of Community &amp; Growth</p>
 
           <p class="team-bio">
             Dani is Co-Founder of Dog House Cafe, leading community growth and partnerships. With a background in hosting and operations, they bring a practical, systems-first perspective and focus on connecting builders who have worked through real-world infrastructure challenges.
@@ -106,22 +94,17 @@
           <h3>Contributors</h3>
           <p class="team-role">Internal &amp; External Contributors</p>
           <p class="team-bio">
-            Doghouse Cafe grows through contributors—builders, operators, and
+            Doghouse Cafe grows through contributors - builders, operators, and
             debuggers who share real-world experiences, edge cases, and lessons
-            learned in production.
-            Some contribute regularly. Others drop in with a single insight.
-
-            Both matter.
+            learned in production. Some contribute regularly. Others drop in with
+            a single insight. Both matter.
           </p>
 
           <a class="team-link" href="https://community.doghouse.cafe" target="_blank" rel="noopener noreferrer">
             Join the Community
           </a>
-
         </article>
       </div>
     </section>
-  </main>
-  <script src="/scripts/theme.js"></script>
-</body>
-</html>
+  </div>
+</BaseLayout>

@@ -446,7 +446,7 @@ h1 {
 
 /* ==========================================================================
    Astro Blog Shell
-   Used by blog/src/layouts/BaseLayout.astro.
+   Used by src/layouts/BaseLayout.astro.
    ========================================================================== */
 
 .site-shell {
@@ -490,7 +490,7 @@ h1 {
 
 /* ==========================================================================
    Astro Blog Index
-   Used by blog/src/pages/index.astro and BlogPostCard.astro.
+   Used by src/pages/blog/index.astro and BlogPostCard.astro.
    ========================================================================== */
 
 .blog-list {
@@ -652,7 +652,7 @@ h1 {
 
 /* ==========================================================================
    Astro Contributors
-   Used by blog/src/pages/contributors.astro.
+   Used by src/pages/blog/contributors.astro.
    ========================================================================== */
 
 .contributors-grid {
@@ -747,7 +747,7 @@ h1 {
 
 /* ==========================================================================
    Astro Blog Post
-   Used by blog/src/layouts/PostLayout.astro.
+   Used by src/layouts/PostLayout.astro.
    ========================================================================== */
 
 .post-page {

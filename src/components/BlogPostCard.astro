@@ -15,11 +15,9 @@ const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
 const slug = post.id.replace(/\.md$/, "");
 const teaser = post.data.teaser ?? post.data.description;
 const author = post.data.author;
-const blogBasePath = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
+const blogBasePath = "/blog/";
 const postUrl = `${blogBasePath}posts/${slug}/`;
-const avatarSrc = resolvePeopleImage(author.avatar, blogBasePath);
+const avatarSrc = resolvePeopleImage(author.avatar);
 ---
 
 <article class="blog-card">

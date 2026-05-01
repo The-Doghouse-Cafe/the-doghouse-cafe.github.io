@@ -1,4 +1,4 @@
-export function resolvePeopleImage(src: string | undefined, basePath: string) {
+export function resolvePeopleImage(src: string | undefined) {
   if (!src) {
     return undefined;
   }
@@ -7,5 +7,5 @@ export function resolvePeopleImage(src: string | undefined, basePath: string) {
     return src;
   }
 
-  return `${basePath}assets/people/${src}`;
+  return `/assets/people/${src}`;
 }

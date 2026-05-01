@@ -2,9 +2,8 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SITE_ROOT_DIR="$ROOT_DIR/site-root"
-SOURCE_DIR="$SITE_ROOT_DIR/styles"
-DEST_DIR="$ROOT_DIR/blog/public/styles"
+SOURCE_DIR="$ROOT_DIR/src/styles"
+DEST_DIR="$ROOT_DIR/public/styles"
 
 if [[ ! -d "$SOURCE_DIR" ]]; then
   echo "Source styles directory not found: $SOURCE_DIR" >&2

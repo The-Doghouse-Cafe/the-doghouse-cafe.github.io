@@ -14,15 +14,12 @@ const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
   year: "numeric",
 });
 const author = post.data.author;
-const blogBasePath = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-const avatarSrc = resolvePeopleImage(author.avatar, blogBasePath);
+const blogBasePath = "/blog/";
+const avatarSrc = resolvePeopleImage(author.avatar);
 ---
 
 <BaseLayout title={`${post.data.title} | Doghouse Cafe Blog`} description={post.data.description}>
   <article class="post-page">
-    <a class="about-back" href={blogBasePath}>Back to Blog</a>
 
     <header class="post-header">
       <p class="blog-meta">{formattedDate}</p>
@@ -60,4 +57,7 @@ const avatarSrc = resolvePeopleImage(author.avatar, blogBasePath);
       <slot />
     </div>
   </article>
+  <footer class="post-footer">
+    <a class="about-back" href={blogBasePath}>Back to Blog</a>
+  </footer>
 </BaseLayout>
