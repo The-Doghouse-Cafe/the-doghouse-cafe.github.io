@@ -145,7 +145,8 @@ github/workflows/deploy-blog.yml
 
 .DS_Store
 blog/public/assets/
-bog/public/styles/
+blog/public/styles/
 
-
-.vscode
+.vscode/*
+blog/.vscode/*
+!.vscode/settings.json

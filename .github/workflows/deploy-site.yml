@@ -1,11 +1,12 @@
-name: Deploy Astro Blog to GitHub Pages
+name: Deploy Site to GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
+      - "site-root/**"
       - "blog/**"
-      - ".github/workflows/deploy-blog.yml"
+      - ".github/workflows/deploy-site.yml"
   workflow_dispatch:
 
 permissions:
@@ -20,9 +21,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./blog
 
     steps:
       - name: Checkout
@@ -35,16 +33,27 @@ jobs:
           cache: npm
           cache-dependency-path: blog/package-lock.json
 
-      - name: Install dependencies
+      - name: Install blog dependencies
+        working-directory: ./blog
         run: npm ci
 
-      - name: Build Astro
+      - name: Build Astro blog
+        working-directory: ./blog
         run: npm run build
+
+      - name: Prepare deploy artifact
+        run: |
+          mkdir -p dist-site
+
+          rsync -av site-root/ dist-site/
+
+          mkdir -p dist-site/blog
+          rsync -av blog/dist/ dist-site/blog/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: blog/dist
+          path: dist-site
 
   deploy:
     environment:
