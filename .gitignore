@@ -144,8 +144,7 @@ vite.config.ts.timestamp-*
 github/workflows/deploy-blog.yml
 
 .DS_Store
-blog/public/assets/
-blog/public/styles/
+
 
 .vscode/*
 blog/.vscode/*
