@@ -2,7 +2,8 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SOURCE_DIR="$ROOT_DIR/assets/team"
+SITE_ROOT_DIR="$ROOT_DIR/site-root"
+SOURCE_DIR="$SITE_ROOT_DIR/assets/team"
 DEST_DIR="$ROOT_DIR/blog/public/assets/people"
 
 if [[ ! -d "$SOURCE_DIR" ]]; then
