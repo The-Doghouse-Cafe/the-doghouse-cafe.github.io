@@ -1,21 +1,67 @@
- <header class="site-header">
-        <a class="site-logo" href="/">Dog House Cafe</a>
+<header class="site-header">
+  <a href="/" class="site-brand" aria-label="Dog House Cafe home">
+    <img src="/assets/img/doghouse-logo.png" alt="" />
+    <span>Dog House Cafe</span>
+  </a>
 
-        <nav class="site-nav" aria-label="Main navigation">
-          <a href="/">Home</a>
-          <a href="/about/">About</a>
-          <a href="/blog/">Blog</a>
-          <a href="/blog/contributors/">Contributors</a>
-          <a href="https://community.doghouse.cafe">Community</a>
-          <a href="https://www.linkedin.com/company/dog-house-cafe" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://github.com/The-Doghouse-Cafe" target="_blank" rel="noopener noreferrer">GitHub</a>
-        </nav>
+  <button
+    class="nav-toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="primary-nav"
+    aria-label="Open navigation menu"
+    data-nav-toggle
+  >
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+    <span aria-hidden="true"></span>
+  </button>
 
-        <div class="theme-switcher">
-          <label class="visually-hidden" for="theme-select">Theme</label>
-          <select class="theme-select" id="theme-select" data-theme-select>
-            <option value="ember">Ember</option>
-            <option value="ocean">Ocean</option>
-          </select>
-        </div>
-      </header>
+  <div class="site-nav-panel" id="primary-nav" data-nav-panel>
+    <nav class="site-nav" aria-label="Main navigation">
+      <!-- <a href="/about/">About</a> -->
+      <a href="/blog/">Blog</a>
+      <a href="/people/">People</a>
+      <a href="https://community.doghouse.cafe">Community</a>
+      <a
+        href="https://www.linkedin.com/company/dog-house-cafe"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        LinkedIn
+      </a>
+      <a
+        href="https://github.com/The-Doghouse-Cafe"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub
+      </a>
+    </nav>
+
+    <div class="theme-switcher">
+      <label class="visually-hidden" for="theme-select">Theme</label>
+      <select class="theme-select" id="theme-select" data-theme-select>
+        <option value="ember">Ember</option>
+        <option value="ocean">Ocean</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<script>
+  const navToggle = document.querySelector("[data-nav-toggle]");
+  const navPanel = document.querySelector("[data-nav-panel]");
+
+  navToggle?.addEventListener("click", () => {
+    const isExpanded = navToggle.getAttribute("aria-expanded") === "true";
+    const nextExpanded = !isExpanded;
+
+    navToggle.setAttribute("aria-expanded", String(nextExpanded));
+    navToggle.setAttribute(
+      "aria-label",
+      nextExpanded ? "Close navigation menu" : "Open navigation menu"
+    );
+    navPanel?.classList.toggle("is-open", nextExpanded);
+  });
+</script>

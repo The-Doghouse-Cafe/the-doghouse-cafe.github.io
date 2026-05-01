@@ -44,26 +44,63 @@ const posts = defineCollection({
 });
 
 const authors = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/blog-content/authors" }),
+  loader: glob({ pattern: "**/[^_]*.md", base: "./src/blog-content/authors" }),
   schema: z.object({
     name: z.string(),
+    slug: z.string().optional(),
     role: z.string().optional(),
-    group: z.string().default("Guests"),
+    roleShort: z.string().optional(),
+    group: z.string().default("guests"),
     priority: z.number().default(999),
-    affiliations: z.array(z.string()).default([]),
+    affiliations: z
+      .array(
+        z.union([
+          z.string(),
+          z.object({
+            label: z.string(),
+            href: z.string().optional(),
+          }),
+        ])
+      )
+      .default([]),
+    image: z.string().optional(),
     avatar: z.string().optional(),
+    bioShort: z.string().optional(),
+    bio: z.string().optional(),
+    links: z
+      .array(
+        z.object({
+          label: z.string(),
+          href: z.string(),
+          type: z.enum(["primary", "affiliation"]).default("primary"),
+        })
+      )
+      .default([]),
     link: linkedinUrl.optional(),
+    cardRole: z.enum(["founder", "dev", "author"]).default("author"),
     draft: z.boolean().default(false),
   }),
 });
 
-const team = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/team" }),
+const people = defineCollection({
+  loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/people" }),
   schema: z.object({
     name: z.string(),
-    role: z.string(),
-    image: z.string(),
-    bio: z.string(),
+    slug: z.string().optional(),
+    role: z.string().optional(),
+    roleShort: z.string().optional(),
+    group: z.string().default("contributors"),
+    image: z.string().optional(),
+    affiliations: z
+      .array(
+        z.object({
+          label: z.string(),
+          href: z.string().optional(),
+        })
+      )
+      .default([]),
+    bioShort: z.string().optional(),
+    bio: z.string().optional(),
     links: z
       .array(
         z.object({
@@ -79,4 +116,4 @@ const team = defineCollection({
   }),
 });
 
-export const collections = { authors, posts, team };
+export const collections = { authors, posts, people };
