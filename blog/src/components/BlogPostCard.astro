@@ -1,0 +1,59 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { resolvePeopleImage } from "../lib/people";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+
+const { post } = Astro.props;
+const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
+const slug = post.id.replace(/\.md$/, "");
+const teaser = post.data.teaser ?? post.data.description;
+const author = post.data.author;
+const blogBasePath = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const postUrl = `${blogBasePath}posts/${slug}/`;
+const avatarSrc = resolvePeopleImage(author.avatar, blogBasePath);
+---
+
+<article class="blog-card">
+  <p class="blog-meta">{formattedDate}</p>
+  <div class="author-byline">
+    {
+      avatarSrc && (
+        <img class="author-avatar" src={avatarSrc} alt="" loading="lazy" />
+      )
+    }
+    <span>
+      By {
+        author.linkedin ? (
+          <a href={author.linkedin} target="_blank" rel="noopener noreferrer">{author.name}</a>
+        ) : (
+          <span>{author.name}</span>
+        )
+      }
+    </span>
+  </div>
+  <h2>
+    <a href={postUrl}>{post.data.title}</a>
+  </h2>
+  <p class="blog-teaser">{teaser}</p>
+  <div class="blog-card-footer">
+    {
+      post.data.tags.length > 0 && (
+        <ul class="tag-list" aria-label="Post tags">
+          {post.data.tags.map((tag) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+    <a class="read-more" href={postUrl}>Read more</a>
+  </div>
+</article>

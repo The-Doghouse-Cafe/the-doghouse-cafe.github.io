@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import BlogPostCard from "../components/BlogPostCard.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="Doghouse Cafe Blog"
+  description="Real-world engineering stories from Doghouse Cafe."
+>
+  <section class="about-hero">
+    <h1>Doghouse Cafe Blog</h1>
+    <p>
+      Real-world engineering stories, debugging paths, production failures,
+      partial answers, and the messy gap between what should work and what
+      actually happens.
+    </p>
+  </section>
+
+  <section class="blog-list" aria-label="Blog posts">
+    {posts.map((post) => <BlogPostCard post={post} />)}
+  </section>
+</BaseLayout>

@@ -1,0 +1,44 @@
+@import url("./base.css");
+
+:root {
+  color-scheme: dark;
+
+  --bg: #030b10;
+  --panel: #071820;
+  --text: #e8fbfb;
+  --muted: #8fb1b8;
+  --accent: #35d6c8;
+  --accent-soft: rgba(53, 214, 200, 0.14);
+  --border: rgba(160, 230, 235, 0.13);
+
+  --theme-glow-color: 45, 166, 190;
+  --body-bg:
+    radial-gradient(circle at 50% 18%, rgba(var(--theme-glow-color), 0.16), transparent 34%),
+    linear-gradient(180deg, #061922 0%, var(--bg) 58%, #02070b 100%);
+  --logo-shadow: drop-shadow(0 0 30px rgba(var(--theme-glow-color), 0.24));
+  --button-hover-border: rgba(166, 241, 244, 0.34);
+  --button-primary-text: #021111;
+
+  --profile-bg-start: #041017;
+  --profile-bg-mid: #062230;
+  --profile-bg-deep: #08283d;
+
+  --founder-bg-end: #07313a;
+  --founder-glow-color: 52, 211, 180;
+
+  --dev-bg-end: #08284d;
+  --dev-glow-color: 76, 156, 255;
+
+  --author-bg-end: #12304a;
+  --author-glow-color: 120, 220, 255;
+
+  --card-overlay: radial-gradient(
+    circle,
+    transparent 60%,
+    rgba(0, 10, 16, 0.5) 100%
+  );
+
+  --footer-border: rgba(160, 230, 235, 0.12);
+  --footer-text: #7f9ba2;
+  --footer-link-hover: #c1fbff;
+}

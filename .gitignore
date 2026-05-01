@@ -141,3 +141,8 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+github/workflows/deploy-blog.yml
+
+.DS_Store
+blog/public/assets/
+bog/public/styles/
