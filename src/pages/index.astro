@@ -11,6 +11,7 @@ import {
   shouldDisplayPostUpdatedDate,
 } from "../lib/posts";
 
+// Homepage data: load the newest published blog post for the featured section.
 const posts = await getSortedPosts();
 const latestPost = posts[0];
 
@@ -43,6 +44,7 @@ const tags = getNormalizedPostTags(latestPost);
   description="A community for real-world engineering stories, production failures, weird edge cases, and debugging paths."
   bodyClass="home-page"
 >
+  <!-- Hero -->
   <img
     class="logo"
     src="/assets/img/doghouse-logo.png"
@@ -82,6 +84,7 @@ const tags = getNormalizedPostTags(latestPost);
     doesn&rsquo;t, it belongs here.
   </p>
 
+  <!-- Explainer cards -->
   <section class="home-about">
     <div class="about-grid">
       <div class="about-card">
@@ -112,6 +115,7 @@ const tags = getNormalizedPostTags(latestPost);
     </div>
   </section>
 
+  <!-- Featured latest post -->
   <section class="home-featured-post" aria-labelledby="in-the-dog-house-title">
     <div class="home-featured-post__intro">
       <p class="home-featured-post__eyebrow">In The Dog House</p>

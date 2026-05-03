@@ -3,6 +3,7 @@ import BlogPostCard from "../../components/BlogPostCard.astro";
 import { getSortedPosts } from "../../lib/posts";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+// Blog index data: newest published posts first.
 const posts = await getSortedPosts();
 ---
 
@@ -10,6 +11,7 @@ const posts = await getSortedPosts();
   title="Dog House Cafe Blog"
   description="Real-world engineering stories from Dog House Cafe."
 >
+  <!-- Blog hero -->
   <section class="about-hero">
     <h1>Dog House Cafe Blog</h1>
     <p>
@@ -19,6 +21,7 @@ const posts = await getSortedPosts();
     </p>
   </section>
 
+  <!-- Post list -->
   <section class="blog-list" aria-label="Blog posts">
     {posts.map((post) => <BlogPostCard post={post} />)}
   </section>

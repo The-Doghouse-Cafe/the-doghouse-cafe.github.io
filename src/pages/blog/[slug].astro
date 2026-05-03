@@ -3,6 +3,7 @@ import { render } from "astro:content";
 import { getPostSlug, getSortedPosts } from "../../lib/posts";
 import PostLayout from "../../layouts/PostLayout.astro";
 
+// Canonical blog routes: one clean URL per published post.
 export async function getStaticPaths() {
   const posts = await getSortedPosts();
 
@@ -17,5 +18,6 @@ const { Content } = await render(post);
 ---
 
 <PostLayout post={post}>
+  <!-- Rendered markdown content -->
   <Content />
 </PostLayout>
