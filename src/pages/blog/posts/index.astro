@@ -1,17 +1,17 @@
 ---
-import { getCollection } from "astro:content";
 import BlogPostCard from "../../../components/BlogPostCard.astro";
+import { getSortedPosts } from "../../../lib/posts";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 
-const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+// Posts archive data: newest published posts first.
+const posts = await getSortedPosts();
 ---
 
 <BaseLayout
-  title="Posts | Doghouse Cafe Blog"
-  description="All Doghouse Cafe blog posts."
+  title="Posts | Dog House Cafe Blog"
+  description="All Dog House Cafe blog posts."
 >
+  <!-- Archive hero -->
   <section class="about-hero">
     <h1>Posts</h1>
     <p>
@@ -20,6 +20,7 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
     </p>
   </section>
 
+  <!-- Archive list -->
   <section class="blog-list" aria-label="Blog posts">
     {posts.map((post) => <BlogPostCard post={post} />)}
   </section>

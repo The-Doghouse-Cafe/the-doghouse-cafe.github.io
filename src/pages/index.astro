@@ -1,74 +1,185 @@
 ---
+import { render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { resolvePostAuthor } from "../lib/authors";
+import { resolvePeopleImage } from "../lib/people";
+import {
+  getNormalizedPostTags,
+  getPostDate,
+  getPostUpdatedDate,
+  getSortedPosts,
+  shouldDisplayPostUpdatedDate,
+} from "../lib/posts";
+
+// Homepage data: load the newest published blog post for the featured section.
+const posts = await getSortedPosts();
+const latestPost = posts[0];
+
+if (!latestPost) {
+  throw new Error("Homepage requires at least one published blog post.");
+}
+
+const { Content } = await render(latestPost);
+const formattedDate = getPostDate(latestPost).toLocaleDateString("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
+const formattedUpdatedDate = getPostUpdatedDate(latestPost)?.toLocaleDateString(
+  "en-US",
+  {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  },
+);
+const showUpdatedDate = shouldDisplayPostUpdatedDate(latestPost);
+const author = await resolvePostAuthor(latestPost.data.author);
+const avatarSrc = resolvePeopleImage(author.avatar);
+const tags = getNormalizedPostTags(latestPost);
 ---
 
 <BaseLayout
-  title="Doghouse Cafe"
+  title="Dog House Cafe"
   description="A community for real-world engineering stories, production failures, weird edge cases, and debugging paths."
   bodyClass="home-page"
 >
-  <img class="logo" src="/assets/img/doghouse-logo.png" alt="Doghouse Cafe logo" />
+  <!-- Hero -->
+  <img
+    class="logo"
+    src="/assets/img/doghouse-logo.png"
+    alt="Dog House Cafe logo"
+  />
 
-  <h1>Doghouse Cafe</h1>
+  <h1>Dog House Cafe</h1>
 
-  <p class="tagline">
-    Where systems fail - and people figure out why.
-  </p>
+  <p class="tagline">Where systems fail - and people figure out why.</p>
 
   <p class="description">
-    Doghouse Cafe is a community for real-world engineering stories:
-    production failures, weird edge cases, debugging paths, partial answers,
-    and the messy gap between &ldquo;it should work&rdquo; and what actually happens.
+    Dog House Cafe is a community for real-world engineering stories: production
+    failures, weird edge cases, debugging paths, partial answers, and the messy
+    gap between &ldquo;it should work&rdquo; and what actually happens.
   </p>
 
   <div class="actions">
     <a
       class="button primary"
-      onclick="plausible('join_click', { props: { location: 'home_hero' } })"
-      href="https://community.doghouse.cafe"
-    >
-      Join the Community
-    </a>
-
-    <a
-      class="button secondary"
       onclick="plausible('blog_click', { props: { location: 'home_hero' } })"
       href="/blog/"
     >
       Read the Blog
-</a>
+    </a>
+
+    <a
+      class="button secondary"
+      onclick="plausible('join_click', { props: { location: 'home_hero' } })"
+      href="https://community.doghouse.cafe"
+    >
+      Join the (Discord) Community
+    </a>
   </div>
 
   <p class="note">
-    Real experience &gt; polished writing. If it should work... but doesn&rsquo;t, it belongs here.
+    Real experience &gt; polished writing. If it should work... but
+    doesn&rsquo;t, it belongs here.
   </p>
 
+  <!-- Explainer cards -->
+  <section class="home-about">
+    <div class="about-grid">
+      <div class="about-card">
+        <h2>What you'll find</h2>
+        <p>
+          Dog House Cafe is a community for builders, operators, and debuggers
+          who care about what actually happens in production—not just what
+          should happen.
+        </p>
+      </div>
 
+      <div class="about-card">
+        <h2>What belongs here</h2>
+        <p>
+          Production failures, weird edge cases, partial fixes, and the paths
+          people took to figure things out when systems didn’t behave the way
+          they were supposed to.
+        </p>
+      </div>
 
-<section class="home-about">
-  <div class="about-grid">
+      <div class="about-card">
+        <h2>Why it exists</h2>
+        <p>
+          Most systems don’t fail randomly—they fail under pressure. This is a
+          place to capture those moments and learn from them.
+        </p>
+      </div>
+    </div>
+  </section>
 
-    <div class="about-card">
-      <h2>What this is</h2>
-      <p>
-        Dog House Cafe is a community for builders, operators, and debuggers who care about what actually happens in production—not just what should happen.
+  <!-- Featured latest post -->
+  <section class="home-featured-post" aria-labelledby="in-the-dog-house-title">
+    <div class="home-featured-post__intro">
+      <p class="home-featured-post__eyebrow">In The Dog House</p>
+      <h2 id="in-the-dog-house-title">Latest from the blog</h2>
+      <p class="home-featured-post__lede">
+        A featured dispatch from the messy gap between &ldquo;it should
+        work&rdquo; and what actually happens.
       </p>
     </div>
 
-    <div class="about-card">
-      <h2>What belongs here</h2>
-      <p>
-        Production failures, weird edge cases, partial fixes, and the paths people took to figure things out when systems didn’t behave the way they were supposed to.
+    <article class="blog-card home-featured-post__card">
+      <p class="blog-meta">
+        Published {formattedDate}
+        {
+          showUpdatedDate && formattedUpdatedDate
+            ? ` · Updated ${formattedUpdatedDate}`
+            : ""
+        }
       </p>
-    </div>
-
-    <div class="about-card">
-      <h2>Why it exists</h2>
-      <p>
-        Most systems don’t fail randomly—they fail under pressure. This is a place to capture those moments and learn from them.
-      </p>
-    </div>
-
-  </div>
-</section>
+      <div class="author-byline">
+        {
+          avatarSrc && (
+            <img class="author-avatar" src={avatarSrc} alt="" loading="lazy" />
+          )
+        }
+        <span>
+          By {
+            author.linkedin ? (
+              <a
+                href={author.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {author.name}
+              </a>
+            ) : (
+              <span>{author.name}</span>
+            )
+          }
+          {author.role && <span> · {author.role}</span>}
+        </span>
+      </div>
+      <h3>{latestPost.data.title}</h3>
+      {
+        tags.length > 0 && (
+          <ul class="tag-list" aria-label="Post tags">
+            {tags.map((tag) => (
+              <li data-tag-slug={tag.slug}>{tag.label}</li>
+            ))}
+          </ul>
+        )
+      }
+      <div class="post-content home-featured-post__content">
+        <Content />
+      </div>
+      <div class="home-featured-post__footer">
+        <a
+          class="read-more"
+          onclick="plausible('blog_click', { props: { location: 'home_featured' } })"
+          href="/blog/"
+        >
+          Read more posts &rarr;
+        </a>
+      </div>
+    </article>
+  </section>
 </BaseLayout>

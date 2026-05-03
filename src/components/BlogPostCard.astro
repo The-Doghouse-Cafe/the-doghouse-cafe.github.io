@@ -2,27 +2,49 @@
 import type { CollectionEntry } from "astro:content";
 import { resolvePostAuthor } from "../lib/authors";
 import { resolvePeopleImage } from "../lib/people";
+import {
+  getNormalizedPostTags,
+  getPostDate,
+  getPostUpdatedDate,
+  getPostUrl,
+  shouldDisplayPostUpdatedDate,
+} from "../lib/posts";
 
 interface Props {
   post: CollectionEntry<"posts">;
 }
 
 const { post } = Astro.props;
-const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
+const formattedDate = getPostDate(post).toLocaleDateString("en-US", {
   month: "long",
   day: "numeric",
   year: "numeric",
 });
-const slug = post.id.replace(/\.md$/, "");
+const formattedUpdatedDate = getPostUpdatedDate(post)?.toLocaleDateString(
+  "en-US",
+  {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  },
+);
+const showUpdatedDate = shouldDisplayPostUpdatedDate(post);
 const teaser = post.data.teaser ?? post.data.description;
 const author = await resolvePostAuthor(post.data.author);
-const blogBasePath = "/blog/";
-const postUrl = `${blogBasePath}posts/${slug}/`;
+const postUrl = getPostUrl(post);
 const avatarSrc = resolvePeopleImage(author.avatar);
+const tags = getNormalizedPostTags(post);
 ---
 
 <article class="blog-card">
-  <p class="blog-meta">{formattedDate}</p>
+  <p class="blog-meta">
+    Published {formattedDate}
+    {
+      showUpdatedDate && formattedUpdatedDate
+        ? ` · Updated ${formattedUpdatedDate}`
+        : ""
+    }
+  </p>
   <div class="author-byline">
     {
       avatarSrc && (
@@ -32,7 +54,9 @@ const avatarSrc = resolvePeopleImage(author.avatar);
     <span>
       By {
         author.linkedin ? (
-          <a href={author.linkedin} target="_blank" rel="noopener noreferrer">{author.name}</a>
+          <a href={author.linkedin} target="_blank" rel="noopener noreferrer">
+            {author.name}
+          </a>
         ) : (
           <span>{author.name}</span>
         )
@@ -45,10 +69,10 @@ const avatarSrc = resolvePeopleImage(author.avatar);
   <p class="blog-teaser">{teaser}</p>
   <div class="blog-card-footer">
     {
-      post.data.tags.length > 0 && (
+      tags.length > 0 && (
         <ul class="tag-list" aria-label="Post tags">
-          {post.data.tags.map((tag) => (
-            <li>{tag}</li>
+          {tags.map((tag) => (
+            <li data-tag-slug={tag.slug}>{tag.label}</li>
           ))}
         </ul>
       )

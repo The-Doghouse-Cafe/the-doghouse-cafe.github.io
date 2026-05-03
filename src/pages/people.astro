@@ -3,28 +3,32 @@ import PeopleCard from "../components/PeopleCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { formatPeopleGroup, getPeople } from "../lib/people";
 
+// Directory data: group people for the public listing page.
 const people = await getPeople();
 const groupOrder = ["founders", "core", "contributors", "guests"];
-const groups = [...new Set(people.map((person) => person.group))].sort((a, b) => {
-  const groupDiff = groupOrder.indexOf(a) - groupOrder.indexOf(b);
+const groups = [...new Set(people.map((person) => person.group))].sort(
+  (a, b) => {
+    const groupDiff = groupOrder.indexOf(a) - groupOrder.indexOf(b);
 
-  if (groupOrder.includes(a) && groupOrder.includes(b)) {
-    return groupDiff;
-  }
+    if (groupOrder.includes(a) && groupOrder.includes(b)) {
+      return groupDiff;
+    }
 
-  if (groupOrder.includes(a)) return -1;
-  if (groupOrder.includes(b)) return 1;
+    if (groupOrder.includes(a)) return -1;
+    if (groupOrder.includes(b)) return 1;
 
-  return a.localeCompare(b);
-});
+    return a.localeCompare(b);
+  },
+);
 ---
 
 <BaseLayout
-  title="People | Doghouse Cafe"
-  description="People building and contributing real-world engineering stories to Doghouse Cafe."
+  title="People | Dog House Cafe"
+  description="People building and contributing real-world engineering stories to Dog House Cafe."
   bodyClass="people-page"
 >
   <div class="people-container">
+    <!-- Page hero -->
     <section class="about-hero people-hero">
       <h1>People</h1>
       <p>
@@ -39,11 +43,15 @@ const groups = [...new Set(people.map((person) => person.group))].sort((a, b) =>
 
         return (
           <section class="people-group" aria-labelledby={`${group}-people`}>
+            {/* Group section */}
             <h2 id={`${group}-people`}>{formatPeopleGroup(group)}</h2>
 
             <div class="people-grid">
               {groupPeople.map((person) => (
-                <PeopleCard person={person} linkProfile={Boolean(person.slug)} />
+                <PeopleCard
+                  person={person}
+                  linkProfile={Boolean(person.slug)}
+                />
               ))}
             </div>
           </section>

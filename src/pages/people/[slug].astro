@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPeople, resolvePeopleImage } from "../../lib/people";
 
+// Person profile routes: generate one page per person slug.
 export async function getStaticPaths() {
   const people = await getPeople();
 
@@ -17,20 +18,31 @@ const { person } = Astro.props;
 const imageSrc = resolvePeopleImage(person.image);
 const role = person.roleShort ?? person.role;
 const primaryLinks = person.links.filter((link) => link.type === "primary");
-const affiliationLinks = person.links.filter((link) => link.type === "affiliation");
+const affiliationLinks = person.links.filter(
+  (link) => link.type === "affiliation",
+);
 const bio = person.bio ?? person.bioShort;
 ---
 
 <BaseLayout
-  title={`${person.name} | Doghouse Cafe`}
-  description={person.bioShort ?? person.roleShort ?? person.role ?? `${person.name} at Doghouse Cafe.`}
+  title={`${person.name} | Dog House Cafe`}
+  description={person.bioShort ??
+    person.roleShort ??
+    person.role ??
+    `${person.name} at Dog House Cafe.`}
 >
+  <!-- Profile content -->
   <article class="person-profile">
-
+    <!-- Profile header -->
     <header class="person-profile-header">
       {
         imageSrc && (
-          <img class="person-profile-avatar" src={imageSrc} alt={person.name} loading="eager" />
+          <img
+            class="person-profile-avatar"
+            src={imageSrc}
+            alt={person.name}
+            loading="eager"
+          />
         )
       }
 
@@ -40,13 +52,21 @@ const bio = person.bio ?? person.bioShort;
       </div>
     </header>
 
+    <!-- Affiliations -->
     {
       person.affiliations.length > 0 && (
-        <ul class="person-profile-affiliations" aria-label={`${person.name} affiliations`}>
+        <ul
+          class="person-profile-affiliations"
+          aria-label={`${person.name} affiliations`}
+        >
           {person.affiliations.map((affiliation) => (
             <li>
               {affiliation.href ? (
-                <a href={affiliation.href} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={affiliation.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {affiliation.label}
                 </a>
               ) : (
@@ -58,8 +78,10 @@ const bio = person.bio ?? person.bioShort;
       )
     }
 
+    <!-- Bio -->
     {bio && <p class="person-profile-bio">{bio}</p>}
 
+    <!-- Links -->
     {
       (primaryLinks.length > 0 || affiliationLinks.length > 0) && (
         <div class="person-profile-links" aria-label={`${person.name} links`}>
@@ -72,6 +94,7 @@ const bio = person.bio ?? person.bioShort;
       )
     }
   </article>
-  <a class="about-back" href="/people/">Back to People</a>
 
+  <!-- Back link -->
+  <a class="about-back" href="/people/">Back to People</a>
 </BaseLayout>

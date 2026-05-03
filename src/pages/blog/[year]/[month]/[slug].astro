@@ -1,0 +1,35 @@
+---
+import {
+  getPostDate,
+  getPostDatedUrl,
+  getPostSlug,
+  getPostUrl,
+  getSortedPosts,
+} from "../../../../lib/posts";
+
+// Dated share routes: derive year/month from frontmatter and redirect to canonical URLs.
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+
+  return posts.map((post) => {
+    const date = getPostDate(post);
+
+    return {
+      params: {
+        year: String(date.getUTCFullYear()),
+        month: String(date.getUTCMonth() + 1).padStart(2, "0"),
+        slug: getPostSlug(post),
+      },
+      props: {
+        sourcePath: getPostDatedUrl(post),
+        destinationPath: getPostUrl(post),
+      },
+    };
+  });
+}
+
+const { destinationPath } = Astro.props;
+
+// Keep one canonical URL for each post.
+return Astro.redirect(destinationPath, 301);
+---
