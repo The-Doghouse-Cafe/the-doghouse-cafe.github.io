@@ -26,15 +26,16 @@ async function getNormalizedPeople() {
 
 export async function resolvePostAuthor(author: PostAuthor): Promise<ResolvedPostAuthor> {
   const people = await getNormalizedPeople();
-  const authorName = normalizeAuthorName(author.name);
+  const rawAuthor = typeof author === "string" ? { name: author } : author;
+  const authorName = normalizeAuthorName(rawAuthor.name);
   const matchedAuthor = people.find(
     (profile) => normalizeAuthorName(profile.name) === authorName
   );
 
   if (!matchedAuthor) {
     return {
-      ...author,
-      role: author.role ?? "Author (Guest)",
+      ...rawAuthor,
+      role: rawAuthor.role ?? "Author (Guest)",
     };
   }
 

@@ -1,15 +1,16 @@
 ---
 title: "Most Network Outages Aren’t Network Problems"
 description: "In practice, most outages come down to DNS or something physical—not complex failures."
-pubDate: 2026-05-01
-tags: ["infrastructure", "Networking", "Reliability"]
-
-author:
-  name: "matt mcgowan"
-  # role: "Founder — Dog House Cafe"
-  # avatar: "matt.webp"
-  # linkedin: "https://www.linkedin.com/in/matthewcmcgowan"
-
+date: 2026-05-01
+slug: most-network-outages-arent-network-problems
+author: "Matt McGowan"
+tags: 
+  - Infrastructure 
+  - Networking
+  - Reliability
+type: post
+status: published
+updated: 2026-05-01
 ---
 
 Most “network outages” aren’t actually network problems.

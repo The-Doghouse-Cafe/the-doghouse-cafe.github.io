@@ -23,22 +23,18 @@ const linkedinUrl = z
   .optional();
 
 const posts = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/blog-content/posts" }),
+  loader: glob({ pattern: "**/[^_]*.md", base: "./src/blog-content/posts" }),
   schema: z.object({
     title: z.string(),
+    slug: z.string(),
     description: z.string(),
     teaser: z.string().optional(),
-    pubDate: z.coerce.date(),
-    updatedDate: z.coerce.date().optional(),
-    author: z.object({
-      name: z.string(),
-      role: z.string().optional(),
-      avatar: z.string().optional(),
-      linkedin: linkedinUrl.optional(),
-    }).default({
-      name: "Doghouse Cafe",
-    }),
+    author: z.string(),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
+    type: z.string(),
+    status: z.string(),
     draft: z.boolean().default(false),
   }),
 });
@@ -60,7 +56,7 @@ const authors = defineCollection({
             label: z.string(),
             href: z.string().optional(),
           }),
-        ])
+        ]),
       )
       .default([]),
     image: z.string().optional(),
@@ -73,7 +69,7 @@ const authors = defineCollection({
           label: z.string(),
           href: z.string(),
           type: z.enum(["primary", "affiliation"]).default("primary"),
-        })
+        }),
       )
       .default([]),
     link: linkedinUrl.optional(),
@@ -96,7 +92,7 @@ const people = defineCollection({
         z.object({
           label: z.string(),
           href: z.string().optional(),
-        })
+        }),
       )
       .default([]),
     bioShort: z.string().optional(),
@@ -107,7 +103,7 @@ const people = defineCollection({
           label: z.string(),
           href: z.string(),
           type: z.enum(["primary", "affiliation"]).default("primary"),
-        })
+        }),
       )
       .default([]),
     cardRole: z.enum(["founder", "dev", "author"]).default("author"),

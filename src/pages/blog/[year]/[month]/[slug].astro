@@ -1,0 +1,27 @@
+---
+import { getPostDate, getPostDatedUrl, getPostSlug, getPostUrl, getSortedPosts } from "../../../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+
+  return posts.map((post) => {
+    const date = getPostDate(post);
+
+    return {
+      params: {
+        year: String(date.getUTCFullYear()),
+        month: String(date.getUTCMonth() + 1).padStart(2, "0"),
+        slug: getPostSlug(post),
+      },
+      props: {
+        sourcePath: getPostDatedUrl(post),
+        destinationPath: getPostUrl(post),
+      },
+    };
+  });
+}
+
+const { destinationPath } = Astro.props;
+
+return Astro.redirect(destinationPath, 301);
+---

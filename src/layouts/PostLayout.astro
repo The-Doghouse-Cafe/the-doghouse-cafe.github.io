@@ -2,6 +2,13 @@
 import type { CollectionEntry } from "astro:content";
 import { resolvePostAuthor } from "../lib/authors";
 import { resolvePeopleImage } from "../lib/people";
+import {
+  getNormalizedPostTags,
+  getPostDate,
+  getPostUpdatedDate,
+  getPostUrl,
+  shouldDisplayPostUpdatedDate,
+} from "../lib/posts";
 import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
@@ -9,21 +16,42 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const formattedDate = post.data.pubDate.toLocaleDateString("en-US", {
+const formattedDate = getPostDate(post).toLocaleDateString("en-US", {
   month: "long",
   day: "numeric",
   year: "numeric",
 });
+const formattedUpdatedDate = getPostUpdatedDate(post)?.toLocaleDateString(
+  "en-US",
+  {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  },
+);
+const showUpdatedDate = shouldDisplayPostUpdatedDate(post);
 const author = await resolvePostAuthor(post.data.author);
 const blogBasePath = "/blog/";
 const avatarSrc = resolvePeopleImage(author.avatar);
+const tags = getNormalizedPostTags(post);
+const canonicalPath = getPostUrl(post);
 ---
 
-<BaseLayout title={`${post.data.title} | Doghouse Cafe Blog`} description={post.data.description}>
+<BaseLayout
+  title={`${post.data.title} | Dog House Cafe Blog`}
+  description={post.data.description}
+  canonicalPath={canonicalPath}
+>
   <article class="post-page">
-
     <header class="post-header">
-      <p class="blog-meta">{formattedDate}</p>
+      <p class="blog-meta">
+        Published {formattedDate}
+        {
+          showUpdatedDate && formattedUpdatedDate
+            ? ` · Updated ${formattedUpdatedDate}`
+            : ""
+        }
+      </p>
       <div class="author-byline post-author">
         {
           avatarSrc && (
@@ -33,7 +61,13 @@ const avatarSrc = resolvePeopleImage(author.avatar);
         <span>
           By {
             author.linkedin ? (
-              <a href={author.linkedin} target="_blank" rel="noopener noreferrer">{author.name}</a>
+              <a
+                href={author.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {author.name}
+              </a>
             ) : (
               <span>{author.name}</span>
             )
@@ -41,19 +75,19 @@ const avatarSrc = resolvePeopleImage(author.avatar);
           {author.role && <span> · {author.role}</span>}
         </span>
       </div>
-      <h1>{post.data.title}</h1>
+      <h3>{post.data.title}</h3>
 
       {
-        post.data.tags.length > 0 && (
+        tags.length > 0 && (
           <ul class="tag-list" aria-label="Post tags">
-            {post.data.tags.map((tag) => (
-              <li>{tag}</li>
+            {tags.map((tag) => (
+              <li data-tag-slug={tag.slug}>{tag.label}</li>
             ))}
           </ul>
         )
       }
     </header>
-     <p>{post.data.description}</p>
+    {post.data.description && <p>{post.data.description}</p>}
     <div class="post-content">
       <slot />
     </div>

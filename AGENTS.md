@@ -1,4 +1,4 @@
-# Doghouse Cafe Agent Notes
+# Dog House Cafe Agent Notes
 
 ## Repo Structure
 

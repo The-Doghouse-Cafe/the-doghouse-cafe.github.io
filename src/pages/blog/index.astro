@@ -1,19 +1,17 @@
 ---
-import { getCollection } from "astro:content";
 import BlogPostCard from "../../components/BlogPostCard.astro";
+import { getSortedPosts } from "../../lib/posts";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const posts = await getSortedPosts();
 ---
 
 <BaseLayout
-  title="Doghouse Cafe Blog"
-  description="Real-world engineering stories from Doghouse Cafe."
+  title="Dog House Cafe Blog"
+  description="Real-world engineering stories from Dog House Cafe."
 >
   <section class="about-hero">
-    <h1>Doghouse Cafe Blog</h1>
+    <h1>Dog House Cafe Blog</h1>
     <p>
       Real-world engineering stories, debugging paths, production failures,
       partial answers, and the messy gap between what should work and what
